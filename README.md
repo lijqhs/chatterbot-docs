@@ -44,6 +44,7 @@ ChatterBot内建了几个回答选择方法，chatterbot.response_selection.*方
 - get_first_response
 - get_most_frequent_response
 - get_random_response
+
 除此之外，还有自建回答选择方法，格式如下：
 ```python
 def select_response(statement, statement_list):
@@ -132,7 +133,6 @@ print(response)
 ```
 程序运行结果如下
 > 猜猜我在想什么：什么
-
 > 恭喜你答对了！
 
 ## 自建逻辑适配器
