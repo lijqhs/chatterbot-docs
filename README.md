@@ -25,4 +25,5 @@ python setup.py install
 ```
 
 ## 搭建机器人
+* [使用ChatterBot做简单机器人](https://blog.csdn.net/u013378306/article/details/64129696)
 * [搭建不同adapter的聊天机器人](https://blog.csdn.net/qq_28168421/article/details/71108106)
