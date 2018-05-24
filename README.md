@@ -1,6 +1,6 @@
 # 《ChatterBot聊天机器人搭建指南》
 
-http://chatterbot.readthedocs.io/en/stable/tutorial.html
+详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)，这里只对要点进行罗列，只为学习使用查询之便。
 
 ## 安装
 ### 安装ChatterBot
@@ -131,5 +131,23 @@ bot = ChatBot(
 response = bot.get_response('你是谁？')
 print(response)
 ```
-## 自建逻辑适配器
-TODO
+### 自建逻辑适配器
+TODO 略
+
+## 输入适配器 Input Adapter
+ChatterBot对不同输入设计了不同的适配器，目的是将输入转为ChatterBot能够处理的格式。
+- 多类型输入适配器（chatterbot.input.VariableInputTypeAdapter）
+- 终端输入适配器（chatterbot.input.TerminalAdapter）
+- Gitter适配器（chatterbot.input.Gitter），Gitter是第三方聊天室软件
+- HipChat适配器（chatterbot.input.HipChat），HipChat第三方聊天软件
+- Mailgun适配器（chatterbot.input.Mailgun），从Mailgun获取email输入
+- 微软聊天机器人（chatterbot.input.Microsoft），对接[微软的Azure Bot服务](https://azure.microsoft.com/zh-cn/services/bot-service/)，[参考](https://www.cnblogs.com/DarrenChan/p/7301380.html)
+- 自定义输入适配器，通过实现一个抽象类InputAdapter来创建新的输入适配器
+
+## 输出适配器 Output Adapter
+- 终端适配器（chatterbot.output.TerminalAdapter）
+- Gitter适配器（chatterbot.output.Gitter）
+- HipChat适配器（chatterbot.output.HipChat）
+- Mailgun适配器（chatterbot.output.Mailgun）
+- 微软聊天机器人适配器（chatterbot.output.Microsoft）
+- 自定义输出适配器，实现抽象类chatterbot.output.OutputAdapter
