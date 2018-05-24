@@ -173,10 +173,10 @@ Response对象的occurence属性表示了一个Statement对象被作为回复的
 
 ## 回复语句的比较
 机器人通过对语句的比较来选择相应的回复，ChatterBot包含了以下几种语句比较方法：
-- Jaccard相似性（chatterbot.comparisons.JaccardSimilarity），需要用到NLTK的**wordnet**语料库。
-- Levenshtein距离（chatterbot.comparisons.LevenshteinDistance），参考[Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance).
-- 情感分析比较（chatterbot.comparisons.SentimentComparison），需要用到NLTK的**vader**字典，[情感分析方法](https://www.cnblogs.com/arkenstone/p/6064196.html)，[NLTK情感分析器](https://blog.csdn.net/sinat_36972314/article/details/79621591)。
-- 同义词距离（chatterbot.comparisons.SynsetDistance），需要用到NLTK的**wordnet**语料库
+1. Jaccard相似性（chatterbot.comparisons.JaccardSimilarity），需要用到NLTK的**wordnet**语料库。
+2. Levenshtein距离（chatterbot.comparisons.LevenshteinDistance），参考[Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance).
+3. 情感分析比较（chatterbot.comparisons.SentimentComparison），需要用到NLTK的**vader**字典，[情感分析方法](https://www.cnblogs.com/arkenstone/p/6064196.html)，[NLTK情感分析器](https://blog.csdn.net/sinat_36972314/article/details/79621591)。
+4. 同义词距离（chatterbot.comparisons.SynsetDistance），需要用到NLTK的**wordnet**语料库
 ### 使用比较方法
 在创建ChatterBot对象时，需要设置`statement_comparison_function`参数：
 ```python
