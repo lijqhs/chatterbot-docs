@@ -3,27 +3,11 @@
 详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)，这里只对要点进行罗列，只为学习使用查询之便。
 
 ## 安装
-### 安装ChatterBot
-- 在线安装
-```python
-pip install chatterbot
-```
-- 本地安装
-或者从[Github](https://github.com/gunthercox/ChatterBot)上下载Python源码，解压并定位至本地目录，然后
+### 安装ChatterBot和Corpus
+或者从Github上下载[ChatterBot](https://github.com/gunthercox/ChatterBot)和[corpus](https://github.com/gunthercox/chatterbot-corpus)Python源码，解压并定位至本地目录，然后
 ```python
 python setup.py install
 ```
-### 安装Corpus
-- 在线安装
-```python
-pip install chatterbot-corpus
-```
-- 本地安装
-或者从[Github](https://github.com/gunthercox/chatterbot-corpus)上下载Python源码，解压并定位至本地目录，然后
-```python
-python setup.py install
-```
-
 ## 搭建机器人
 * [使用ChatterBot做简单机器人](https://blog.csdn.net/u013378306/article/details/64129696)
 * [搭建不同adapter的聊天机器人](https://blog.csdn.net/qq_28168421/article/details/71108106)
@@ -187,4 +171,13 @@ chatbot = ChatBot(
     # ...
     statement_comparison_function=levenshtein_distance
 )
+```
+
+# Django
+```mermaid
+graph LR
+A[Square Rect] -- Link text --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
 ```
