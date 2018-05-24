@@ -12,10 +12,9 @@ python setup.py install
 * [使用ChatterBot做简单机器人](https://blog.csdn.net/u013378306/article/details/64129696)
 * [搭建不同adapter的聊天机器人](https://blog.csdn.net/qq_28168421/article/details/71108106)
 
-# 适配器 Adapter
 ## 逻辑适配器 Logic Adapter
 ### MultiLogicAdapter 
-用来从配置中所有逻辑适配器中返回一条回复。每个逻辑适配器返回一个回复语句和一个置信分数，MultiLogicAdapter返回分数最高的回复语句。但是当多个逻辑适配器返回的回复语句A相同，即使还有更高分数的回复语句B，A也会被赋予更高优先级。如下表所示，早上好将被MultiLogicAdapter选中被返回：
+用来从配置中所有逻辑适配器中返回一条回复。每个逻辑适配器返回一个回复语句和一个置信分数，MultiLogicAdapter返回分数最高的回复语句。但是当多个逻辑适配器返回的回复语句A相同，即使还有更高分数的回复语句B，A也会被赋予更高优先级。如下表所示，`早上好`将被MultiLogicAdapter选中被返回：
 
 |置信分数|语句|
 |----|----|
