@@ -145,9 +145,25 @@ ChatterBot对不同输入设计了不同的适配器，目的是将输入转为C
 - 自定义输入适配器，通过实现一个抽象类InputAdapter来创建新的输入适配器
 
 ## 输出适配器 Output Adapter
+输出适配器的目的是将机器人回复传输到对应的API终端。
 - 终端适配器（chatterbot.output.TerminalAdapter）
 - Gitter适配器（chatterbot.output.Gitter）
 - HipChat适配器（chatterbot.output.HipChat）
 - Mailgun适配器（chatterbot.output.Mailgun）
 - 微软聊天机器人适配器（chatterbot.output.Microsoft）
 - 自定义输出适配器，实现抽象类chatterbot.output.OutputAdapter
+
+## 存储适配器 Storage Adapter
+这个需要详细了解一下Python访问数据库的方法，参考[这里](https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432010325987131e75bf6b3543429a2975f88ce8ffa9000)。
+- SQL存储适配器
+- MongoDB存储适配器
+- 自定义存储适配器，实现抽象类chatterbot.storage.StorageAdapter
+
+## 过滤器 Filter
+过滤器做这样一个事情：提高查询效率。这个部分需要好好研究一下。
+
+## 对话过程
+### Statement对象
+ChatterBot的Statement对象表示机器人从用户收到的一个输入语句，或者表示机器人对于某个输入的回复语句。
+### Response对象
+Response对象表示了两个Statement对象的关系
