@@ -171,12 +171,3 @@ chatbot = ChatBot(
     statement_comparison_function=levenshtein_distance
 )
 ```
-
-# Django
-```mermaid
-graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
