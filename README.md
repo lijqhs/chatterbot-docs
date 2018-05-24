@@ -141,7 +141,7 @@ ChatterBot对不同输入设计了不同的适配器，目的是将输入转为C
 - Gitter适配器（chatterbot.input.Gitter），Gitter是第三方聊天室软件
 - HipChat适配器（chatterbot.input.HipChat），HipChat第三方聊天软件
 - Mailgun适配器（chatterbot.input.Mailgun），从Mailgun获取email输入
-- 微软聊天机器人（chatterbot.input.Microsoft），对接[微软的Azure Bot服务](https://azure.microsoft.com/zh-cn/services/bot-service/)，[参考](https://www.cnblogs.com/DarrenChan/p/7301380.html)
+- 微软聊天机器人（chatterbot.input.Microsoft），对接[微软的Azure Bot Service](https://azure.microsoft.com/zh-cn/services/bot-service/)，参考[这里](https://www.cnblogs.com/DarrenChan/p/7301380.html)。
 - 自定义输入适配器，通过实现一个抽象类InputAdapter来创建新的输入适配器
 
 ## 输出适配器 Output Adapter
@@ -166,4 +166,24 @@ ChatterBot对不同输入设计了不同的适配器，目的是将输入转为C
 ### Statement对象
 ChatterBot的Statement对象表示机器人从用户收到的一个输入语句，或者表示机器人对于某个输入的回复语句。
 ### Response对象
-Response对象表示了两个Statement对象的关系
+Response对象表示了两个Statement对象的关系，每个Statement对象都有一个in_response_to引用来链接它所回复的Statement对象。
+![Statement-response关系图](http://chatterbot.readthedocs.io/en/stable/_images/statement-response-relationship.svg)
+Response对象的occurence属性表示了一个Statement对象被作为回复的次数。
+![Response对象](http://chatterbot.readthedocs.io/en/stable/_images/statement-relationship.svg)
+
+## 回复语句的比较
+#. Jaccard相似性（chatterbot.comparisons.JaccardSimilarity），需要用到NLTK的**wordnet**语料库。
+#. Levenshtein距离（chatterbot.comparisons.LevenshteinDistance），参考[Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance).
+#. 情感分析比较（chatterbot.comparisons.SentimentComparison），需要用到NLTK的**vader**字典，[情感分析方法](https://www.cnblogs.com/arkenstone/p/6064196.html)，[NLTK情感分析器](https://blog.csdn.net/sinat_36972314/article/details/79621591)。
+#. 同义词距离（chatterbot.comparisons.SynsetDistance），需要用到NLTK的**wordnet**语料库
+### 使用比较方法
+在创建ChatterBot对象时，需要设置`statement_comparison_function`参数：
+```python
+from chatterbot import ChatBot
+from chatterbot.comparisons import levenshtein_distance
+
+chatbot = ChatBot(
+    # ...
+    statement_comparison_function=levenshtein_distance
+)
+```
