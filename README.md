@@ -1,6 +1,33 @@
-# 《ChatterBot聊天机器人搭建指南》
 
-详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)，这里只对要点进行罗列，只为学习使用查询之便。
+# 《ChatterBot聊天机器人搭建指南》
+详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)。
+<!-- TOC -->
+
+- [《ChatterBot聊天机器人搭建指南》](#chatterbot聊天机器人搭建指南)
+    - [安装](#安装)
+        - [安装ChatterBot和Corpus](#安装chatterbot和corpus)
+    - [搭建机器人](#搭建机器人)
+    - [逻辑适配器 Logic Adapter](#逻辑适配器-logic-adapter)
+        - [MultiLogicAdapter](#multilogicadapter)
+        - [逻辑适配器选取回复语句的方式](#逻辑适配器选取回复语句的方式)
+        - [设置回复语句选择方法](#设置回复语句选择方法)
+        - [最佳匹配适配器（BestMatchAdapter）](#最佳匹配适配器bestmatchadapter)
+        - [时间适配器（TimeLogicAdapter）](#时间适配器timelogicadapter)
+        - [数学运算适配器 Mathematical Evaluation Adapter](#数学运算适配器-mathematical-evaluation-adapter)
+        - [低置信度适配器（LowConfidenceAdapter）](#低置信度适配器lowconfidenceadapter)
+        - [特定回复适配器（SpecificResponseAdapter）](#特定回复适配器specificresponseadapter)
+        - [自建逻辑适配器](#自建逻辑适配器)
+    - [输入适配器 Input Adapter](#输入适配器-input-adapter)
+    - [输出适配器 Output Adapter](#输出适配器-output-adapter)
+    - [存储适配器 Storage Adapter](#存储适配器-storage-adapter)
+    - [过滤器 Filter](#过滤器-filter)
+    - [对话过程](#对话过程)
+        - [Statement对象](#statement对象)
+        - [Response对象](#response对象)
+    - [回复语句的比较](#回复语句的比较)
+        - [使用比较方法](#使用比较方法)
+
+<!-- /TOC -->
 
 ## 安装
 ### 安装ChatterBot和Corpus
