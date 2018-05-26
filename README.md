@@ -197,3 +197,6 @@ chatbot = ChatBot(
     statement_comparison_function=levenshtein_distance
 )
 ```
+## 处理流程
+ChatterBot对话处理流程：
+![ChatterBot处理流程](https://i.imgur.com/a2rdxDi.png)
