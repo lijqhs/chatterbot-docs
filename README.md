@@ -60,6 +60,7 @@ chatbot = ChatBot('Hello Bot',
 
 ## MultiLogicAdapter 
 MultiLogicAdapter 依次调用每个 Logic Adapter，Logic Adapter 被调用时先执行can_process 方式判断输入是否可以命中这个逻辑处理插件。比如”今天天气怎么样“这样的问题显然需要命中天气逻辑处理插件，这时时间逻辑处理插件的can_process 则会返回False。在命中后相应的Logic Adapter 负责计算出对应的回答（Statement对象）以及可信度（confidence），MultiLogicAdapter会取可信度最高的回答，并进入下一步。
+
 用来从配置中所有逻辑适配器中返回一条回复。每个逻辑适配器返回一个回复语句和一个置信分数，MultiLogicAdapter返回分数最高的回复语句。MultiLogicAdapter设计中有一个小trick需要注意一下，但是当有多个逻辑适配器返回的回复语句A相同，即使还有更高分数的回复语句B，A也会被赋予更高优先级。如下表所示，`早上好`将被MultiLogicAdapter选中被返回：
 
 |置信分数|语句|
@@ -162,7 +163,52 @@ response = bot.get_response('你是谁？')
 print(response)
 ```
 ## 自建逻辑适配器
-TODO 略
+一个简单的自定义Logic Adapter的示例`HelloAdapter`：
+```python
+# hello_bot.py
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+from hello_adapter import HelloAdapter
+# import hello_adapter
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+
+class HelloChat():
+
+    def __init__(self):
+        self.chatbot = ChatBot('Hello Bot',
+            # storage_adapter= 'chatterbot.storage.SQLStorageAdapter',
+            logic_adapters=[
+                {
+                    'import_path': 'hello_adapter.HelloAdapter',
+                    "statement_comparison_function": "chatterbot.comparisons.levenshtein_distance",
+                    "response_selection_method": "chatterbot.response_selection.get_first_response"
+                }
+            ],
+            # input_adapter='chatterbot.input.VariableInputTypeAdapter',
+            # output_adapter='chatterbot.output.TerminalAdapter'
+            )
+            
+        self.chatbot.set_trainer(ChatterBotCorpusTrainer)
+        self.chatbot.train('./finance.yml')
+
+    def get_response(self, info):
+        return str(self.chatbot.get_response(info))
+
+
+
+if __name__ == '__main__':
+    chat = HelloChat()
+    while True:
+        try:
+            reply = chat.get_response(input('>'))
+            print(reply)
+        except (KeyboardInterrupt, KeyError, SystemExit):
+            break
+```
+
 
 # 输入适配器 Input Adapter
 ChatterBot对不同输入设计了不同的适配器，目的是将输入转为ChatterBot能够处理的格式。
