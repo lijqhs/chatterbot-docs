@@ -7,6 +7,7 @@
 - [安装](#安装)
     - [安装ChatterBot和Corpus](#安装chatterbot和corpus)
 - [搭建机器人](#搭建机器人)
+- [一次生成知识库](#一次生成知识库)
 - [逻辑适配器 Logic Adapter](#逻辑适配器-logic-adapter)
     - [MultiLogicAdapter](#multilogicadapter)
     - [逻辑适配器选取回复语句的方式](#逻辑适配器选取回复语句的方式)
@@ -40,6 +41,44 @@ python setup.py install
 # 搭建机器人
 * [使用ChatterBot做简单机器人](https://blog.csdn.net/u013378306/article/details/64129696)
 * [搭建不同adapter的聊天机器人](https://blog.csdn.net/qq_28168421/article/details/71108106)
+
+# 一次生成知识库
+ChatterBot可以通过脚本注入sqlite数据库（关闭只读模式）作为知识库，所以可以先写个脚本来把知识库注入sqlite数据库：
+```python
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import logging
+
+class HelloChat():
+    def __init__(self):
+        self.chatbot = ChatBot('Hello Bot')            
+        self.chatbot.set_trainer(ChatterBotCorpusTrainer)
+        self.chatbot.train('./knowledge.yml')
+
+if __name__ == '__main__':
+    chat = HelloChat()
+    print('finance.yml生成知识数据库db.sqlite3')
+```
+上述代码文件名hello_db.py，在代码目录中执行`python hello_db.py`
+运行之后目录下生成了一个`db.sqlite3`文件，这就是知识库。然后再次创建不需要再加载knowledge.yml训练知识库，并且打开只读模式，否则ChatterBot会不断学习，修改知识库，而这个过程实际不应该让用户来参与：
+```python
+class HelloChat():
+
+    def __init__(self):
+        self.chatbot = ChatBot('Hello Bot', read_only=True)
+
+    def get_response(self, info):
+        return str(self.chatbot.get_response(info))
+
+if __name__ == '__main__':
+    chat = HelloChat()
+    while True:
+        try:
+            reply = chat.get_response(input('>'))
+            print(reply)
+        except (KeyboardInterrupt, KeyError, SystemExit):
+            break
+```
 
 # 逻辑适配器 Logic Adapter
 ChatterBot中的Logic Adapter是插件式设计。在创建ChatterBot实例的时候，通过以下方法配置逻辑适配器（可以有多个）：
