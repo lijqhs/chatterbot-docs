@@ -3,6 +3,7 @@
 详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)。
 <!-- TOC -->
 
+- [《ChatterBot聊天机器人搭建指南》](#chatterbot聊天机器人搭建指南)
 - [安装](#安装)
     - [安装ChatterBot和Corpus](#安装chatterbot和corpus)
 - [搭建机器人](#搭建机器人)
@@ -10,11 +11,12 @@
     - [MultiLogicAdapter](#multilogicadapter)
     - [逻辑适配器选取回复语句的方式](#逻辑适配器选取回复语句的方式)
     - [设置回复语句选择方法](#设置回复语句选择方法)
-    - [最佳匹配适配器（BestMatchAdapter）](#最佳匹配适配器bestmatchadapter)
-    - [时间适配器（TimeLogicAdapter）](#时间适配器timelogicadapter)
-    - [数学运算适配器 Mathematical Evaluation Adapter](#数学运算适配器-mathematical-evaluation-adapter)
-    - [低置信度适配器（LowConfidenceAdapter）](#低置信度适配器lowconfidenceadapter)
-    - [特定回复适配器（SpecificResponseAdapter）](#特定回复适配器specificresponseadapter)
+    - [内置逻辑适配器](#内置逻辑适配器)
+        - [最佳匹配适配器（BestMatchAdapter）](#最佳匹配适配器bestmatchadapter)
+        - [时间适配器（TimeLogicAdapter）](#时间适配器timelogicadapter)
+        - [数学运算适配器 Mathematical Evaluation Adapter](#数学运算适配器-mathematical-evaluation-adapter)
+        - [低置信度适配器（LowConfidenceAdapter）](#低置信度适配器lowconfidenceadapter)
+        - [特定回复适配器（SpecificResponseAdapter）](#特定回复适配器specificresponseadapter)
     - [自建逻辑适配器](#自建逻辑适配器)
 - [输入适配器 Input Adapter](#输入适配器-input-adapter)
 - [输出适配器 Output Adapter](#输出适配器-output-adapter)
@@ -25,6 +27,7 @@
     - [Response对象](#response对象)
 - [回复语句的比较](#回复语句的比较)
     - [使用比较方法](#使用比较方法)
+    - [处理流程](#处理流程)
 
 <!-- /TOC -->
 
@@ -39,8 +42,25 @@ python setup.py install
 * [搭建不同adapter的聊天机器人](https://blog.csdn.net/qq_28168421/article/details/71108106)
 
 # 逻辑适配器 Logic Adapter
+ChatterBot中的Logic Adapter是插件式设计。在创建ChatterBot实例的时候，通过以下方法配置逻辑适配器（可以有多个）：
+```python
+chatbot = ChatBot('Hello Bot',
+    logic_adapters=[
+        {
+             'import_path': 'hello_adapter.HelloAdapter'
+         },
+        {
+             'import_path': 'hello_adapter.BestMatch',
+             "statement_comparison_function": "chatterbot.comparisons.levenshtein_distance",
+             "response_selection_method": "chatterbot.response_selection.get_first_response"
+         }
+	])
+```
+3	主进程在ChatterBot对象被初始化时会将用户配置的逻辑适配器到一个列表中，然后交MultiLogicAdapter 进行处理。
+
 ## MultiLogicAdapter 
-用来从配置中所有逻辑适配器中返回一条回复。每个逻辑适配器返回一个回复语句和一个置信分数，MultiLogicAdapter返回分数最高的回复语句。但是当多个逻辑适配器返回的回复语句A相同，即使还有更高分数的回复语句B，A也会被赋予更高优先级。如下表所示，`早上好`将被MultiLogicAdapter选中被返回：
+MultiLogicAdapter 依次调用每个 Logic Adapter，Logic Adapter 被调用时先执行can_process 方式判断输入是否可以命中这个逻辑处理插件。比如”今天天气怎么样“这样的问题显然需要命中天气逻辑处理插件，这时时间逻辑处理插件的can_process 则会返回False。在命中后相应的Logic Adapter 负责计算出对应的回答（Statement对象）以及可信度（confidence），MultiLogicAdapter会取可信度最高的回答，并进入下一步。
+用来从配置中所有逻辑适配器中返回一条回复。每个逻辑适配器返回一个回复语句和一个置信分数，MultiLogicAdapter返回分数最高的回复语句。MultiLogicAdapter设计中有一个小trick需要注意一下，但是当有多个逻辑适配器返回的回复语句A相同，即使还有更高分数的回复语句B，A也会被赋予更高优先级。如下表所示，`早上好`将被MultiLogicAdapter选中被返回：
 
 |置信分数|语句|
 |----|----|
@@ -72,7 +92,8 @@ chatbot = ChatBot(
     response_selection_method=get_most_frequent_response
 )
 ```
-## 最佳匹配适配器（BestMatchAdapter）
+## 内置逻辑适配器
+### 最佳匹配适配器（BestMatchAdapter）
 顾名思义，选取与输入最匹配的回复语句。
 ```python
 chatbot = ChatBot(
@@ -86,13 +107,13 @@ chatbot = ChatBot(
     ]
 )
 ```
-## 时间适配器（TimeLogicAdapter）
+### 时间适配器（TimeLogicAdapter）
 该适配器用来回复当前时间。
 
-## 数学运算适配器 Mathematical Evaluation Adapter
+### 数学运算适配器 Mathematical Evaluation Adapter
 该适配器检测到语句中含有数学表达式，系统将回复这个表达式和运算后的值。
 
-## 低置信度适配器（LowConfidenceAdapter）
+### 低置信度适配器（LowConfidenceAdapter）
 该适配器设定一个默认语句，和置信分阈值，当所有返回语句的置信分数低于该阈值，默认语句将被返回。
 ```python
 # Create a new instance of a ChatBot
@@ -114,7 +135,7 @@ bot = ChatBot(
 ```
 有没有注意到，以上代码中logic_adapters列表中可以设置多个Adapter！在这个例子中，当所有适配器的回复语句置信分数小于0.65，**I am sorry, but I do not understand.** 将被返回。
 
-## 特定回复适配器（SpecificResponseAdapter）
+### 特定回复适配器（SpecificResponseAdapter）
 给特定语句设定特定回复：
 ```python
 # -*- coding: utf-8 -*-
