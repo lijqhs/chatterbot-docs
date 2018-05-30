@@ -1,9 +1,9 @@
 
-# 《ChatterBot聊天机器人搭建指南》
+# 《ChatterBot聊天机器人简易手册》
 详细内容请参考[原版用户手册](http://chatterbot.readthedocs.io/en/stable/tutorial.html)。
 <!-- TOC -->
 
-- [《ChatterBot聊天机器人搭建指南》](#chatterbot聊天机器人搭建指南)
+- [《ChatterBot聊天机器人简易手册》](#chatterbot聊天机器人简易手册)
 - [安装](#安装)
     - [安装ChatterBot和Corpus](#安装chatterbot和corpus)
 - [搭建机器人](#搭建机器人)
