@@ -40,7 +40,7 @@
 
 ## 安装ChatterBot和Corpus
 
-从Github上下载[ChatterBot](https://github.com/gunthercox/ChatterBot)和[corpus](https://github.com/gunthercox/chatterbot-corpus)Python源码，解压并定位至本地目录，然后
+从Github上下载[ChatterBot](https://github.com/gunthercox/ChatterBot)和[corpus](https://github.com/gunthercox/chatterbot-corpus)源码，解压并定位至本地目录，然后
 
 ```python
 python setup.py install
