@@ -223,3 +223,54 @@ PUT /my_index/_mapping/my_type
 
 ### Elasticsearch mappings 详解
 [Elasticsearch 5.4 Mapping详解](https://blog.csdn.net/napoay/article/details/73100110)
+
+## ES同义词设置
+同义词词典设置如下，保存为synonym.txt，放置在ES安装目录/config/analysis/synonym.txt
+```
+开通, 申请
+为什么, 为啥
+```
+
+在ES的mapping设置中，增加setting：
+```
+PUT /synonym_test_index
+{
+    "settings": {
+        "index" : {
+            "analysis" : {
+                "analyzer" : {
+                    "synonym_analyzer" : {
+                        "tokenizer" : "whitespace",
+                        "filter" : ["synonym_filter"]
+                    }
+                },
+                "filter" : {
+                    "synonym_filter" : {
+                        "type" : "synonym",
+                        "synonyms_path" : "analysis/synonym.txt"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+        "test_type": {
+            "properties": {
+                "my_text": {
+                    "type": "text", 
+                    "analyzer": "synonym_analyzer"
+                }
+            }
+        }
+    }
+}
+```
+
+测试语句：
+```
+POST sysnonym_test_index/_analyze
+{
+    "field": "my_text",
+    "text": "开通 实名帐户"
+}
+```
