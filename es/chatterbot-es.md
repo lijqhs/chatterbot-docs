@@ -225,6 +225,7 @@ PUT /my_index/_mapping/my_type
 [Elasticsearch 5.4 Mapping详解](https://blog.csdn.net/napoay/article/details/73100110)
 
 ## ES同义词设置
+[Synonym Token Filter](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-tokenfilter.html)
 同义词词典设置如下，保存为synonym.txt，放置在ES安装目录/config/analysis/synonym.txt
 ```
 开通, 申请
